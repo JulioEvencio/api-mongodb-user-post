@@ -1,6 +1,7 @@
 package com.github.julioevencio.apimongodbuserpost.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.julioevencio.apimongodbuserpost.domain.User;
+import com.github.julioevencio.apimongodbuserpost.dto.UserDTO;
 import com.github.julioevencio.apimongodbuserpost.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,13 +40,14 @@ public class UserResource {
 							description = "Return all users",
 							content = @Content(
 									mediaType = MediaType.APPLICATION_JSON_VALUE,
-									array = @ArraySchema(schema = @Schema(implementation = User.class))
+									array = @ArraySchema(schema = @Schema(implementation = UserDTO.class))
 							)
 					)
 			}
 	)
-	public ResponseEntity<List<User>> findAll() {
-		List<User> response = service.findAll();
+	public ResponseEntity<List<UserDTO>> findAll() {
+		List<User> users = service.findAll();
+		List<UserDTO> response = users.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(response);
 	}

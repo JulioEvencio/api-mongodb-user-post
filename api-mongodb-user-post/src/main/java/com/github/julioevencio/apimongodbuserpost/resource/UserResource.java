@@ -1,8 +1,8 @@
 package com.github.julioevencio.apimongodbuserpost.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.julioevencio.apimongodbuserpost.domain.User;
+import com.github.julioevencio.apimongodbuserpost.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -22,6 +23,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(value = "/users")
 @Tag(name = "Users", description = "Endpoints for users")
 public class UserResource {
+	
+	@Autowired
+	private UserService service;
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(
@@ -40,13 +44,7 @@ public class UserResource {
 			}
 	)
 	public ResponseEntity<List<User>> findAll() {
-		User fulano = new User("1", "Fulano", "fulano@fulano");
-		User ciclano = new User("2", "Ciclano", "ciclano@ciclano");
-
-		List<User> response = new ArrayList<>();
-
-		response.add(fulano);
-		response.add(ciclano);
+		List<User> response = service.findAll();
 
 		return ResponseEntity.ok().body(response);
 	}

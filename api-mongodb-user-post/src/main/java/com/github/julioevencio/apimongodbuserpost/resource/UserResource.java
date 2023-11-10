@@ -109,5 +109,23 @@ public class UserResource {
 
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Delete an user",
+			description = "Delete an user",
+			tags = {"Users"},
+			responses = {
+					@ApiResponse(
+							responseCode = "204",
+							description = "Delete an user"
+					)
+			}
+	)
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		service.delete(id);
+
+		return ResponseEntity.noContent().build();
+	}
 
 }

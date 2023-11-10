@@ -127,5 +127,34 @@ public class UserResource {
 
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Update an user by id",
+			description = "Update an user by id",
+			tags = {"Users"},
+			responses = {
+					@ApiResponse(
+							responseCode = "204",
+							description = "Update an user by id"
+					),
+					@ApiResponse(
+							responseCode = "404",
+							description = "User not found",
+							content = @Content(
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
+									schema = @Schema(implementation = StandardError.class)
+							)
+					)
+			}
+	)
+	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO dto) {
+		User user = service.fromDTO(dto);
+		
+		user.setId(id);
+		user = service.update(user);
+		
+		return ResponseEntity.noContent().build();
+	}
 
 }

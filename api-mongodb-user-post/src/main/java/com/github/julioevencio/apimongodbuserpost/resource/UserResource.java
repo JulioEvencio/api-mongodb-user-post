@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.github.julioevencio.apimongodbuserpost.domain.Post;
 import com.github.julioevencio.apimongodbuserpost.domain.User;
 import com.github.julioevencio.apimongodbuserpost.dto.UserDTO;
 import com.github.julioevencio.apimongodbuserpost.resource.exceptions.StandardError;
@@ -110,7 +111,7 @@ public class UserResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(
 			summary = "Delete an user",
 			description = "Delete an user",
@@ -128,7 +129,7 @@ public class UserResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(
 			summary = "Update an user by id",
 			description = "Update an user by id",
@@ -155,6 +156,37 @@ public class UserResource {
 		user = service.update(user);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "return all posts for user id",
+			description = "return all posts for user id",
+			tags = {"Users"},
+			responses = {
+					@ApiResponse(
+							responseCode = "200",
+							description = "return all posts for user id",
+							content = @Content(
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
+									schema = @Schema(implementation = Post.class)
+							)
+					),
+					@ApiResponse(
+							responseCode = "404",
+							description = "User not found",
+							content = @Content(
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
+									schema = @Schema(implementation = StandardError.class)
+							)
+					)
+			}
+	)
+	public ResponseEntity<List<Post>> findAllPosts(@PathVariable String id) {
+		User user = service.findById(id);		
+		List<Post> response = user.getPosts();
+		
+		return ResponseEntity.ok().body(response);
 	}
 
 }

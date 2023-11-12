@@ -1,5 +1,6 @@
 package com.github.julioevencio.apimongodbuserpost.resource;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,33 @@ public class PostResource {
 	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String param) {
 		String text = URL.decodeParam(param);
 		List<Post> response = service.findByTitle(text);
+
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@RequestMapping(value = "/fullsearch", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Return all posts by title and date",
+			description = "Return all posts by title and date",
+			tags = {"Posts"},
+			responses = {
+					@ApiResponse(
+							responseCode = "200",
+							description = "Return all posts by title and date",
+							content = @Content(
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
+									array = @ArraySchema(schema = @Schema(implementation = Post.class))
+							)
+					)
+			}
+	)
+	public ResponseEntity<List<Post>> fullSearch(@RequestParam(value = "title", defaultValue = "") String title, @RequestParam(value = "minDate", defaultValue = "") String minDate, @RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(minDate, new Date(0L));
+		
+		title = URL.decodeParam(title);
+		
+		List<Post> response = service.fullSearch(title, min, max);
 
 		return ResponseEntity.ok().body(response);
 	}

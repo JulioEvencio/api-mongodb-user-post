@@ -22,7 +22,7 @@ The API documentation is available on Swagger. To access it, follow these steps:
 ## How to run
 Prerequisites:
 
-1. Java 17 and 
+1. Java 17
 2. Configure your database in the application.properties file
 
 ```bash

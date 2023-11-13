@@ -7,6 +7,7 @@ API for Users and posts
 ## Technologies used
 - Java
 - Maven
+- MongoDB
 - Spring Boot
 - Spring web
 - Spring Data MongoDB

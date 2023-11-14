@@ -29,7 +29,7 @@ Prerequisites:
 
 ```bash
 # Clone this repository
-git https://github.com/JulioEvencio/api-mongodb-user-post.git
+git clone https://github.com/JulioEvencio/api-mongodb-user-post.git
 
 # Enter the project folder
 cd api-mongodb-user-post/api-mongodb-user-post/

@@ -7,6 +7,7 @@ API for Users and posts
 ## Technologies used
 - Java
 - Maven
+- Docker
 - MongoDB
 - Spring Boot
 - Spring web
